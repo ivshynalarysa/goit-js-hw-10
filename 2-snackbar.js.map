@@ -1,0 +1,1 @@
+{"version":3,"file":"2-snackbar.js","sources":["../src/js/2-snackbar.js"],"sourcesContent":["// Описаний у документації\nimport iziToast from \"izitoast\";\n// Додатковий імпорт стилів\nimport \"izitoast/dist/css/iziToast.min.css\";\n\n\n`✅ Fulfilled promise in ${delay}ms`\n\n`❌ Rejected promise in ${delay}ms`\n\n\n"],"names":[],"mappings":"4HAMA,0BAA0B,KAAK,6BAEN,KAAK"}
