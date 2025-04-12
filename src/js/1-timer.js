@@ -10,18 +10,66 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 
-const options = {
-    enableTime: true,
-    time_24hr: true,
-    defaultDate: new Date(),
-    minuteIncrement: 1,
-    onClose(selectedDates) {
-      console.log(selectedDates[0]);
-    },
-  };
+const inputDate = document.querySelector('#datetime-picker')
+const btnStart = document.querySelector('[data-start]')
+const DateDay = document.querySelector('[data-days]')
+const DateHours = document.querySelector('[data-hours]')
+const DateMinutes = document.querySelector('[data-minutes]')
+const DateSeconds = document.querySelector('[data-seconds]')
 
+let timerId = null
+let selectedDate = null
+
+
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+      if(selectedDates[0] < new Date()){
+          return iziToast.error({
+              position:"topRight",
+              message: "Please choose a date in the future"
+          })
+      }
+      selectedDate = selectedDates[0]
+      btnStart.removeAttribute('disabled')
+  },
+};
+  
+ btnStart.addEventListener(`click`, createTime)
+
+ flatpickr(inputDate, options)
+
+ function createTime() {
+
+  timerId = setInterval(updateTimer, 1000)
+  btnStart.setAttribute('disabled', true)
+  inputDate.setAttribute('disabled', true)
   
 
+ }
+
+ function updateTimer()
+ {
+  const time = selectedDate - new Date()
+  const { days, hours, minutes, seconds } = convertMs(time)
+  DateDay.textContent = addLeadingZero(days)
+  DateHours.textContent = addLeadingZero(hours)
+  DateMinutes.textContent = addLeadingZero(minutes)
+  DateSeconds.textContent = addLeadingZero(seconds)
+  if(time < 1000){
+      clearInterval(timerId)
+      inputDate.removeAttribute('disabled')
+  }
+
+
+ }
+
+ function addLeadingZero(value){
+  return String(value).padStart(2, 0)
+}
 
   function convertMs(ms) {
     // Number of milliseconds per unit of time
